@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mohammed Ali M - Terminal Resume</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #33ff33;
+      font-family: 'Courier New', Courier, monospace;
+      padding: 20px;
+    }
+
+    .terminal {
+      max-width: 900px;
+      margin: auto;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .prompt::before {
+      content: "➜ ~ ";
+      color: #00ff00;
+    }
+
+    a {
+      color: #00ffff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .cursor::after {
+      content: "_";
+      animation: blink 1s steps(2, start) infinite;
+    }
+
+    @keyframes blink {
+      to {
+        visibility: hidden;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="terminal" id="terminal"></div>
+
+  <script>
+    const lines = [
+      { type: "prompt", text: "whoami" },
+      { type: "text", text: "Mohammed Ali M" },
+
+      { type: "prompt", text: "cat profile.txt" },
+      { type: "text", text: "Aspiring professional with hands-on experience in computer hardware, network maintenance," },
+      { type: "text", text: "and a keen interest in IoT technologies, game development, and gadgets. Proficient in" },
+      { type: "text", text: "troubleshooting hardware issues, setting up secure networks, and exploring connected devices." },
+      { type: "text", text: "Eager to apply skills in dynamic environments and contribute to smart tech solutions." },
+
+      { type: "prompt", text: "cat contact.txt" },
+      { type: "text", text: "Email: ", link: "mailto:mohammedalim@zohomail.com", linkText: "mohammedalim@zohomail.com" },
+      { type: "text", text: "Phone: +91 7306513268" },
+      { type: "text", text: "Location: Kerala, India" },
+
+      { type: "prompt", text: "cat education.txt" },
+      { type: "text", text: "Bachelor’s Degree - Kerala University" },
+      { type: "text", text: "Diploma - Computer Hardware, Network Maintenance, IoT & e-Gadgets (Keltron)" },
+
+      { type: "prompt", text: "cat experience.txt" },
+      { type: "text", text: "Doorstep Computer Technician (2022 - Present)" },
+      { type: "text", text: "- On-site troubleshooting and repairs for desktops, laptops, and networking equipment." },
+      { type: "text", text: "- Install and configure software, hardware upgrades, and peripherals." },
+      { type: "text", text: "- Diagnose and resolve network connectivity issues for home and small business users." },
+
+      { type: "prompt", text: "cat skills.txt" },
+      { type: "text", text: "- Windows Server" },
+      { type: "text", text: "- Networking" },
+      { type: "text", text: "- Linux (RHEL)" },
+      { type: "text", text: "- CCTV Setup" },
+      { type: "text", text: "- IoT & Gadgets" },
+      { type: "text", text: "- Microsoft Office 365" },
+      { type: "text", text: "- Hardware Maintenance" },
+
+      { type: "prompt", text: "cat languages.txt" },
+      { type: "text", text: "- English (Fluent)" },
+      { type: "text", text: "- Malayalam (Native)" },
+      { type: "text", text: "- Hindi (Intermediate)" },
+
+      { type: "prompt", text: "cat achievements.txt" },
+      { type: "text", text: "- Completed Cloud Computing (Basics)" },
+      { type: "text", text: "- Trained 100+ students on Udemy" },
+      { type: "text", text: "- Published a book on Game Development in Malayalam" },
+
+      { type: "prompt", text: "cat links.txt" },
+      { type: "text", text: "LinkedIn: ", link: "https://linkedin.com/in/mohammed-ali-m-4ab942289/", linkText: "linkedin.com/in/mohammed-ali-m-4ab942289" },
+      { type: "text", text: "GitHub: ", link: "https://github.com/Minimoholic", linkText: "github.com/Minimoholic" },
+      { type: "text", text: "Udemy: ", link: "https://www.udemy.com/user/mohammed-ali-2278/", linkText: "udemy.com/user/mohammed-ali-2278" },
+
+      { type: "prompt", text: "exit" }
+    ];
+
+    const terminal = document.getElementById("terminal");
+
+    function typeLineText(element, text, speed = 10) {
+      return new Promise(resolve => {
+        let i = 0;
+        function typeChar() {
+          if (i < text.length) {
+            element.textContent += text[i++];
+            setTimeout(typeChar, speed);
+          } else {
+            resolve();
+          }
+        }
+        typeChar();
+      });
+    }
+
+    async function typeAll() {
+      for (const line of lines) {
+        if (line.type === "prompt") {
+          const div = document.createElement("div");
+          div.className = "prompt";
+          terminal.appendChild(div);
+          await typeLineText(div, line.text);
+        } else if (line.type === "text") {
+          const div = document.createElement("div");
+
+          if (line.link) {
+            div.append(line.text);
+            const link = document.createElement("a");
+            link.href = line.link;
+            link.target = "_blank";
+            link.textContent = line.linkText;
+            div.appendChild(link);
+          } else {
+            await typeLineText(div, line.text);
+          }
+
+          terminal.appendChild(div);
+        }
+      }
+
+      // Blinking cursor at end
+      const cursor = document.createElement("div");
+      cursor.className = "prompt cursor";
+      terminal.appendChild(cursor);
+    }
+
+    window.onload = typeAll;
+  </script>
+</body>
+</html>
